@@ -129,11 +129,13 @@ Os modelos foram avaliados utilizando métricas de desempenho. Abaixo estão os 
   <img src="img/matriz_confusao_normalizada_RepTree.png" width="700">
 </div>
 
- • Diagonal Principal (Verdadeiro Positivo): O maior destaque é Concessão com 97% de acertos, seguido por Registro (95%) e Autorização (86%). O  balanceado contribuiu com a taxa de acertos na classe minoritária (Concessão).
+### Análise da Matriz de Confusão Normalizada
 
- • Falsos Positivos: O modelo não confunde Registro com Concessão (0%). O modelo cassifica erroneamente 7% das Autorizações como Concessão e 7% como registro.
+ • Diagonal Principal (Verdadeiros Positivos): O maior destaque é a classe Concessão, com 97% de acertos, seguida por Registro (95%) e Autorização (86%). O balanceamento dos dados contribuiu significativamente para a alta taxa de acertos na classe minoritária (Concessão).
 
- • O Impacto no Resultado: Como o volume de processos de Autorização é muito maior na base de dados, esses 6,7% de erro geram um volume de alarmes falsos que infla a coluna de predição e derruba a precisão de Concessão para 35%, embora o modelo apresenta um bom desempenho na captura de quase todas as concessões reais.
+ • Falsos Positivos: O modelo demonstra excelente especificidade em alguns pontos, como não confundir Registro com Concessão (0%). Por outro lado, classifica erroneamente cerca de 7,3% das Autorizações como Concessão e 6,7% como Registro
+
+ • O Impacto no Resultado: Como o volume de processos de Autorização é majoritário na base de dados, esses 7,3% de erro direcionados para a classe menor geram um volume de alarmes falsos que infla a coluna de predição. Isso derruba a precisão de Concessão para 35%, embora o modelo apresente um ótimo desempenho (sensibilidade) na captura de quase todas as concessões reais.
 
 #### Importância 
 
@@ -147,6 +149,8 @@ Os modelos foram avaliados utilizando métricas de desempenho. Abaixo estão os 
 |6° |`DscOrigemCombustivel`| 0.000000     |
 
 
+#### Análisando as Variáveis de Importância
+
 • A variável `NomFonteCombustivel` é dominante, sendo que mais de 67% da capacidade da árvore de separar as classes vêm das regras criadas a partir dela.
 
 • A variável `SigUFPrincipal`também apresenta forte relevância, indicando que os fatores de localização geográfica dos empreendimentos contribuem significativamente para a diferenciação dos processos.
@@ -156,13 +160,13 @@ Os modelos foram avaliados utilizando métricas de desempenho. Abaixo estão os 
 • As variáveis `DscFonteCombustivel` e `DscOrigemCombustivel` apresentam importância zerada (0,00%), pois trazem a mesma informação já mapeada pela variável dominante `NomFonteCombustivel`.
 
 
-#### Árvore Podada Gerada pelo modelo 
+### Árvore Podada Gerada pelo modelo 
 
 <div align="center">
   <img src="img/arvore_gerada_RepTree.png" width=1400">
 </div>
 
-Interpretação da Árvore Gerada 
+#### Interpretação da Árvore Gerada 
 
 ```
 Raiz (DscFonteCombustivel)
@@ -174,6 +178,8 @@ Raiz (DscFonteCombustivel)
  • Condição (False):  O fluxo vai para à direita, onde a maioria dos dados são destinas as outorgas de Registros. 
 
 ```
+
+#### Precisão do Modelo 
 
 |Classe (Alvo) | Precisão | Recall |F1-Score|Suporte|
 |-------|-------|-------|-------|-------|
@@ -198,6 +204,16 @@ Raiz (DscFonteCombustivel)
   <img src="img/matriz_confusao_normalizada.png" width="700">
 </div>
 
+### Análise da Matriz de Confusão Normalizada
+
+ • Diagonal Principal (Verdadeiros Positivos): O maior destaque fica para a classe Registro, com 98% de acertos, seguida por Autorização (93%) e Concessão (80%). O modelo demonstra uma excelente capacidade de identificação correta nas três categorias. 
+
+ • Falsos Positivos e Confusões: Embora a taxa de acerto para a classe Concessão tenha sido ligeiramente menor em comparação às outras, nota-se que o erro mais expressivo ocorre quando o modelo confunde Concessão com Autorização (18%). Ainda assim, comparado ao algoritmo REPTree, o modelo se mostra mais robusto e equilibrado, evitando penalizar excessivamente as demais classes.
+
+ • Impacto no Resultado: Diferentemente do REPTree, este modelo apresenta maior precisão geral e um ajuste mais refinado para a classificação das demandas.
+
+#### Importância 
+
 |Posição |Preditores  | Nível de Importância (%) |
 |------- |:------------- |:-------------:|
 |1° |`SigUFPrincipal`       | 0.397117   |
@@ -207,6 +223,9 @@ Raiz (DscFonteCombustivel)
 |5° |`DscFonteCombustivel`  | 0.080691   |
 |5° |`DscOrigemCombustivel` | 0.067343   |
 
+#### Análisando as Variáveis de Importância 
+
+
 • A variável `SigUFPrincipal` é o preditor mais reevantes, onde aproximadamente 40% de toda a capacidade preditiva e das divisões das árvores de decisão dependem dessa variável.
 
 • As variáveis `MdaGarantiaFisicaKw` é o segundo preditor mais relevantes, junto com a primeira variável acumuam mais de 60% de todo o modelo. 
@@ -215,6 +234,7 @@ Raiz (DscFonteCombustivel)
 
 • As variáveis ``SigTipoGeracao``, `DscFonteCombustivel` e `DscOrigemCombustivel` apresentam uma importância menor para a construção do modelo.
 
+#### Precisão do Modelo 
 
 |Classe (Alvo) | Precisão | Recall |F1-Score|Suporte|
 |-------|-------|-------|-------|-------|
@@ -238,4 +258,44 @@ O principa ganho do modelo foi a estabilização da classe `Consessão`. Além d
 
 ## 🎯 Dashboard 
 
+Dashboard interativo com dados históricos de outorgas do setor elétrico 
+brasileiro (ANEEL). 
 
+As análises estão sub-divididas entre os cenários nacional, estadual e regional. 
+
+**O que o dashboard mostra:**
+- Tipos de geração (UFV, UTE, EOL, CGH, PCH, UHE, UTN)
+- Fases das usinas (construção, não iniciada, operação)
+- Fontes de energia (limpa, meio-termo, suja)
+- Tipos de outorgas (registro, autorização, concessão)
+- Potência fiscalizada, outorgada e garantia física por estado/região
+
+**Fonte dos dados:** [ANEEL](https://dadosabertos.aneel.gov.br/dataset/siga-sistema-de-informacoes-de-geracao-da-aneel/resource/25722a60-194d-4234-ab3b-b71354078402)
+
+**Ferramenta:** [Tableau]
+
+**Dashboard:** [Outorgas Setor Elétrico Brasil]()
+
+**Início**
+
+<div align="center">
+  <img src="img/Inicio.png" width="700">
+</div>
+
+**Visão Nacional**
+
+<div align="center">
+  <img src="img/Nacional.png" width="700">
+</div>
+
+**Visão Regional**
+
+<div align="center">
+  <img src="img/Regional.png" width="700">
+</div>
+
+**Visão Estadual**
+
+<div align="center">
+  <img src="img/Estadual.png" width="700">
+</div>
