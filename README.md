@@ -12,9 +12,9 @@
 ---
 
 ## 💡 Sobre o Projeto
-O processo de outorga no setor elétrico brasileiro é a autorização formal da Agência Nacional de Energia Elétrica (ANEEL) para as empresas explorem serviços ou instalações de energia (geração, transmissão e distribuição). 
+O processo de outorga no setor elétrico brasileiro é a autorização formal concedida pela Agência Nacional de Energia Elétrica (ANEEL) para que empresas explorem serviços ou instalações de energia (geração, transmissão e distribuição). 
 
-O processo de autorga pode ser classificado em 3 tipos distintos: 
+Esse processo é classificado em três modalidades distintas: 
 
 1. Concessão: Aplicada a serviços públicos prestados com riscos por conta e risco da empresa, geralmente obtida por meio de licitação/leilão (ex: linhas de transmissão e distribuição).
 
@@ -31,22 +31,24 @@ Nesse sentido, este projeto processa históricos de dados de outorgas do sistema
 
 O projeto está organizado de forma modular para separar a lógica de transformação de dados, as definições dos modelos e a visualização:
 ```
+
+Sistemas_Eletrico_Brasileiro/ 
 ├── dados/
 │   └── dados_futuros.csv          # Dataset pré-processado
-├── img/                           #imagens de validações dos modelos 
-│   
+├── img/                           # imagens do README     
 ├── src/
-│   ├── data_transformation/       # Preparação da base de dados e definição dos previsores e classe 'prevista'
-│   ├── decision_tree/             # Módulo do modelo de Árvore de Decisão 
-│   │   ├── model.py               # Implementação das configurações do modelo REP Tree
-│   │   └── train.py               # treino, plots e avaliação do modelo da REP Tree
-│   └── random_forest/             # Módulo do modelo de Floresta Aleatória
-│       ├── model.py               # Implementação das Configuração do Random Forest
-│       └── train.py               # treino, plots e avaliação do Random Forest
+│   ├── data_transformation/       # Preparação da base de dados
+│   │   └── transformation.py
+│   ├── decision_tree/             # Modelo de Árvore de Decisão 
+│   │   ├── model.py               
+│   │   └── train.py               
+│   └── random_forest/             # Modelo Random Forest 
+│       ├── model.py              
+│       └── train.py               
 ├── style/
 │   └── style.css                  # Estilos do dashboard 
 ├── index.html                     # Importação do dashboard do Tableau
-├── main.py                        # Execução principal dos modelos e dashboard
+├── main.py                        # Execução principal
 ├── requirements.txt               # Arquivo de dependências com versões exatas fixadas
 └── README.md                      # Documentação completa do projeto
 ```
@@ -263,18 +265,12 @@ brasileiro (ANEEL).
 
 As análises estão sub-divididas entre os cenários nacional, estadual e regional. 
 
-**O que o dashboard mostra:**
-- Tipos de geração (UFV, UTE, EOL, CGH, PCH, UHE, UTN)
-- Fases das usinas (construção, não iniciada, operação)
-- Fontes de energia (limpa, meio-termo, suja)
-- Tipos de outorgas (registro, autorização, concessão)
-- Potência fiscalizada, outorgada e garantia física por estado/região
 
 **Fonte dos dados:** [ANEEL](https://dadosabertos.aneel.gov.br/dataset/siga-sistema-de-informacoes-de-geracao-da-aneel/resource/25722a60-194d-4234-ab3b-b71354078402)
 
 **Ferramenta:** [Tableau]
 
-**Dashboard:** [Outorgas Setor Elétrico Brasil]()
+**Dashboard:** [Outorgas Setor Elétrico Brasil](https://lucasvinisan.github.io/Sistema_Eletrico_Brasileiro/)
 
 **Início**
 
@@ -282,11 +278,22 @@ As análises estão sub-divididas entre os cenários nacional, estadual e region
   <img src="img/Inicio.png" width="700">
 </div>
 
+**O que o dashboard mostra:**
+- Introdução sobre o problema e apresentação da base de dados. 
+
 **Visão Nacional**
 
 <div align="center">
   <img src="img/Nacional.png" width="700">
 </div>
+
+**O que o dashboard mostra:**
+- Entrada em Operação das Usinas no Brasil 
+- Tipos de geração (UFV, UTE, EOL, CGH, PCH, UHE, UTN)
+- Fases das usinas (construção, não iniciada, operação)
+- Tipos de Energia (Energia Renóvaveis ou Não Renováveis)
+- Tipos de outorgas (registro, autorização, concessão)
+- Potência fiscalizada, outorgada e garantia física por em nível Nacional
 
 **Visão Regional**
 
@@ -294,8 +301,24 @@ As análises estão sub-divididas entre os cenários nacional, estadual e region
   <img src="img/Regional.png" width="700">
 </div>
 
+**O que o dashboard mostra:**
+- Distribuição Por regiões 
+- Tipos de geração (UFV, UTE, EOL, CGH, PCH, UHE, UTN)
+- Fases das usinas (construção, não iniciada, operação)
+- Tipos de outorgas (registro, autorização, concessão)
+- Potência fiscalizada, outorgada e garantia física em nível Regional
+- Ranking por regiões e/ou os cinco estados melhor ranqueado de cada região selecionada 
+
 **Visão Estadual**
 
 <div align="center">
   <img src="img/Estadual.png" width="700">
 </div>
+
+**O que o dashboard mostra:**
+- Mapa selecionável do Brasil (Estados)  
+- Tipos de geração (UFV, UTE, EOL, CGH, PCH, UHE, UTN)
+- Fases das usinas (construção, não iniciada, operação)
+- Tipos de outorgas (registro, autorização, concessão)
+- Fontes de Energia (Energia Limpa, meio termo e Suja)
+- Potência fiscalizada, outorgada e garantia física em nível Regional
