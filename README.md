@@ -1,4 +1,5 @@
 # Outorgas Setor Elétrico Brasileiro
+
 ## 📋 Sumário
 * [Sobre o Projeto](#-sobre-o-projeto)
 * [Estrutura do Repositório](#-estrutura-do-repositório)
@@ -22,8 +23,7 @@ Esse processo é classificado em três modalidades distintas:
 
 3. Registro: Para empreendimentos de capacidade reduzida ou fontes alternativas que exigem apenas comunicação oficial à ANEEL ou cadastro na Câmara de Comercialização de Energia Elétrica (CCEE).
 
-
-Nesse sentido, este projeto processa históricos de dados de outorgas do sistema elétrico da ANEEL, executa transformações necessárias nas variáveis e treina modelos de classificação para mapear padrões. 
+Nesse sentido, este projeto processa históricos de dados das outorgas do sistema elétrico da ANEEL, executa transformações necessárias nas variáveis e treina modelos de classificação para mapear padrões. 
 
 ---
 
@@ -58,12 +58,12 @@ Sistemas_Eletrico_Brasileiro/
 As principais ferramentas utilizadas no desenvolvimento deste ecossistema foram:
 
 * **Python :** Linguagem base para implementação do projeto.
-* **Pandas:** Utilizado para manipulação de DataFrames, tratamento de valores ausentes.
-* **NumPy:** Implemntação das operações matemáticas.
-* **Scikit-Learn:** Framework para divisão de dados (train/test split), extração de métricas de validação e implementações dos algoritmos de árvore.
-* **Matplotlib & Seaborn:** plotagem da matriz de confução de metricas de avaliação dos modelos. 
-* **Tableau Public:** Plataforma de Business Intelligence utilizada para construir os dashboards interativos.
-* **HTML5 & CSS3:** Importar dashboard a uma página web.
+* **Pandas:** Utilizado para manipulação de DataFrames, tratamento dos dados.
+* **Numpy:** Implemntação das operações matemáticas.
+* **Scikit-Learn:** Framework para divisão de dados (train/test split), extração de métricas de validação e implementações dos modelos de ML.
+* **Matplotlib:** plotagem da matriz de confução de metricas de avaliação dos modelos. 
+* **Tableau:** Plataforma de Business Intelligence utilizada para construir os dashboards interativos.
+* **HTML5 & CSS3:** Importação e visualização do dashboard.
 
 ---
 
@@ -73,11 +73,9 @@ Os dados já foram pré-processados via google colab e salvos no formato dados_f
 
 Pré-Processamento 
 
-1. **Limpeza de Dados:** Remoção de registros duplicados e tratamento de *outliers* na base elétrica.
-2. **Codificação das Variáveis Categóricas:** Aplicação de técnicas como *One-Hot Encoding* ou *Ordinal Encoding* dependendo da natureza das variáveis do sistema.
+1. **Limpeza de Dados:** Remoção de registros duplicados e remoção de colunas irrelevantes para os modelos.
+2. **Codificação das Variáveis Categóricas:** Aplicação do LabelEncoder da biblioteca Scikit-Learn.preprocessing para transofarmar valores categóricos em númericos.
 3. **Divisão dos Dados:** Separação do dataset em conjuntos de treino e teste (70% treino e 30% teste).
-
-O script `src/data_transformation/transformation.py` defini as colunas Atributos e a variável alvo, além de converter os valores categóricos para valores númericos.  
 
 Atributos
 
@@ -93,10 +91,12 @@ Variável alvo
 
 ### 1. Random Forest (Floresta Aleatória)
 O Random Forest é um algoritmo de aprendizado supervisionado baseado em *Ensemble Learning*. Ele constrói múltiplas árvores de decisão durante a fase de treinamento e combina suas predições (via votação majoritária para classificação ou média para regressão).
+
 * **Vantagens:** Alta robustez contra *overfitting*, lida bem com relações não-lineares de alta dimensionalidade e fornece a importância de cada variável (*Feature Importance*).
 * **Hiperparâmetros Ajustados:** Número de árvores (`n_estimators`), profundidade máxima (`max_depth`) e critérios de divisão (`criterion='gini`).
 
 ### 2. REP Tree (Reduced Error Pruning Tree)
+
 A *Reduced Error Pruning Tree* é uma variação otimizada da árvore de decisão clássica. Ela constrói a árvore utilizando ganho de informação ou redução de variância e, em seguida, aplica a técnica de poda de trás para frente (da base para a raiz).
 * **O Processo de Poda:** O algoritmo separa uma parte dos dados de treino como conjunto de validação. Ele avalia o impacto de podar (remover) subárvores específicas; se a remoção da subárvore não diminuir a precisão no conjunto de validação, a subárvore é substituída por uma folha.
 * **Vantagens:** Gera modelos altamente interpretáveis, visualmente limpos, muito mais rápidos na inferência e imunes a ramos ruidosos.
@@ -159,7 +159,7 @@ Os modelos foram avaliados utilizando métricas de desempenho. Abaixo estão os 
 
 • As variáveis `SigTipoGeracao` e `MdaGarantiaFisicaKw` possuem menor impacto, contribuindo apenas no refinamento de alguns nós específicos da árvore.
 
-• As variáveis `DscFonteCombustivel` e `DscOrigemCombustivel` apresentam importância zerada (0,00%), pois trazem a mesma informação já mapeada pela variável dominante `NomFonteCombustivel`.
+• As variáveis `DscFonteCombustivel` e `DscOrigemCombustivel` apresentam importância zerada (0%), pois trazem as mesmas informações mapeadas pela variável dominante `NomFonteCombustivel`.
 
 
 ### Árvore Podada Gerada pelo modelo 
@@ -196,7 +196,7 @@ Raiz (DscFonteCombustivel)
 
  • Macro Average (F1-Score: 0.79): É a média simples do desempenho das três classes. Como dá peso igual a todas, mostra que o modelo vai bem mesmo na classe com poucos dados (`Concessão`)
 
- • Weighted Average (F1-Score: 0.93): É a média ponderada que leva em conta o tamanho de cada classe (Suporte).  Como reflete a proporção real da sua base de dados, bate com os 93% da acurácia.
+ • Weighted Average (F1-Score: 0.93): É a média ponderada que leva em conta o tamanho de cada classe (Suporte).  Como reflete a proporção real da base de dados, isso vai em encontra com os 93% da acurácia observados.
  
  • Observação: Mesmo com a aplicação de técnicas de balanceamento, a classe `Concessão` obteve um valor baixo de precisão. Isso evidencia que o modelo apresenta limitações para desempenhar com alta assertividade em variáveis (classes) que possuem poucas observações na base de dados, gerando um volume expressivo de falsos positivos. 
 
@@ -210,9 +210,9 @@ Raiz (DscFonteCombustivel)
 
  • Diagonal Principal (Verdadeiros Positivos): O maior destaque fica para a classe Registro, com 98% de acertos, seguida por Autorização (93%) e Concessão (80%). O modelo demonstra uma excelente capacidade de identificação correta nas três categorias. 
 
- • Falsos Positivos e Confusões: Embora a taxa de acerto para a classe Concessão tenha sido ligeiramente menor em comparação às outras, nota-se que o erro mais expressivo ocorre quando o modelo confunde Concessão com Autorização (18%). Ainda assim, comparado ao algoritmo REPTree, o modelo se mostra mais robusto e equilibrado, evitando penalizar excessivamente as demais classes.
+ • Falsos Positivos e Confusões: Embora a taxa de acerto para a classe Concessão tenha sido ligeiramente menor em comparação ao Rep Tree, nota-se que o erro mais expressivo ocorre quando o modelo confunde Concessão com Autorização (18%). Ainda assim, o modelo se mostra mais robusto e equilibrado, evitando penalizar excessivamente as demais classes.
 
- • Impacto no Resultado: Diferentemente do REPTree, este modelo apresenta maior precisão geral e um ajuste mais refinado para a classificação das demandas.
+ • Impacto no Resultado: Diferentemente do REPTree, esse modelo apresenta maior precisão geral e um ajuste mais refinado para a classificação das demandas de outorgas.
 
 #### Importância 
 
@@ -228,7 +228,7 @@ Raiz (DscFonteCombustivel)
 #### Análisando as Variáveis de Importância 
 
 
-• A variável `SigUFPrincipal` é o preditor mais reevantes, onde aproximadamente 40% de toda a capacidade preditiva e das divisões das árvores de decisão dependem dessa variável.
+• A variável `SigUFPrincipal` é o preditor mais relevantes, onde aproximadamente 40% de toda a capacidade preditiva e das divisões das árvores de decisão dependem dessa variável.
 
 • As variáveis `MdaGarantiaFisicaKw` é o segundo preditor mais relevantes, junto com a primeira variável acumuam mais de 60% de todo o modelo. 
 
@@ -254,9 +254,10 @@ Raiz (DscFonteCombustivel)
  • Weighted Average (F1-Score: 0.97): É a média ponderada que leva em conta o tamanho de cada classe.  Com valor de 0.97 mostra que o modelo consolidou a eficácia na classificação dos dados reais.  
 
 ## Conclusões
-O modelo de Random Forest se mostrou superior ao Rep Tree, com uma eficiência superior e um comportamento de classifcação das classes alvos muito mais equilibrado do que a abordagem inicial da árvore de decisão podada. 
 
-O principa ganho do modelo foi a estabilização da classe `Consessão`. Além do salto na accurácia geral que saltou para 97%.  
+O modelo Random Forest mostrou-se superior ao REPTree, apresentando maior eficiência e um comportamento de classificação das classes-alvo muito mais equilibrado do que a abordagem inicial da árvore de decisão podada.
+
+O principal ganho do modelo foi a estabilização da classe Concessão, além do salto na acurácia geral, que atingiu 97%. 
 
 ## 🎯 Dashboard 
 
@@ -302,7 +303,7 @@ As análises estão sub-divididas entre os cenários nacional, estadual e region
 </div>
 
 **O que o dashboard mostra:**
-- Distribuição Por regiões 
+- Distribuição por regiões  
 - Tipos de geração (UFV, UTE, EOL, CGH, PCH, UHE, UTN)
 - Fases das usinas (construção, não iniciada, operação)
 - Tipos de outorgas (registro, autorização, concessão)
@@ -322,3 +323,8 @@ As análises estão sub-divididas entre os cenários nacional, estadual e region
 - Tipos de outorgas (registro, autorização, concessão)
 - Fontes de Energia (Energia Limpa, meio termo e Suja)
 - Potência fiscalizada, outorgada e garantia física em nível Regional
+
+
+## Conclusões
+
+implementação deste dashboard otimizou o processo de consulta sobre as outorgas no Brasil, transformando dados complexos em indicadores visuais intuitivos. A ferramenta não apenas mapeia os estados com maior potencial elétrico, mas também evidencia as disparidades regionais e o fluxo de concessões, servindo como base para o planejamento estratégico de novos investimentos na matriz energética nacional.
