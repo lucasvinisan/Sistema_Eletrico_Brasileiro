@@ -109,7 +109,7 @@ Os próximos passos descrevem com executar o projeto:
 
 ### 1. Clonar o Repositório
 ```bash
-1. git clone [https://github.com/seu-usuario/nome-do-repositorio.git](https://github.com/seu-usuario/nome-do-repositorio.git)
+1. git clone [https://github.com/lucasvinisan/Sistema_Eletrico_Brasileiro.git](https://github.com/lucasvinisan/Sistema_Eletrico_Brasileiro.git)
 2. cd Sistema_Eletrico_Brasileiro
 ```
 ### 2. Instale as dependências:
