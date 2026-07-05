@@ -108,19 +108,18 @@ A *Reduced Error Pruning Tree* é uma variação otimizada da árvore de decisã
 Os próximos passos descrevem com executar o projeto:
 
 ### 1. Clonar o Repositório
-```bash
 1. git clone [https://github.com/lucasvinisan/Sistema_Eletrico_Brasileiro.git](https://github.com/lucasvinisan/Sistema_Eletrico_Brasileiro.git)
 2. cd Sistema_Eletrico_Brasileiro
-```
+
 ### 2. Instale as dependências:
-```
-pip install -r requirements.txt
-```
+
+3. pip install -r requirements.txt
+
 ### 3. Execute os scripts de treinamento
-```
-python src/random_forest/train.py
-python src/decision_tree/train.py
-```
+
+4. python src/decision_tree/train.py
+5. python src/random_forest/train.py
+
 ## 📊 Resultados e Discussão
 
 Os modelos foram avaliados utilizando métricas de desempenho. Abaixo estão os resultados comparativos:
