@@ -12,7 +12,8 @@ def train_test(previsores, classe):
     x_train, x_test, y_train, y_test = train_test_split(previsores,
                                                         classe,
                                                         test_size=0.3,
-                                                        random_state=0)
+                                                        random_state=0,
+                                                        stratify=classe)
     
     return x_train, x_test, y_train, y_test 
 
@@ -25,7 +26,7 @@ def matriz_confusao(y_test, previsoes, floresta):
             previsoes,
             display_labels=floresta.classes_,
             cmap='Blues',
-            #normalize='True',
+            normalize='true',
             xticks_rotation=45
     )
 

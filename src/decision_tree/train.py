@@ -24,7 +24,8 @@ def train_test(previsores, classe):
 
 def buscar_melhor_alpha(x_train, y_train):
     
-    arvore_base = DecisionTreeClassifier(random_state=2, class_weight='balanced')
+    arvore_base = DecisionTreeClassifier(random_state=2, 
+                                         class_weight='balanced')
     path = arvore_base.cost_complexity_pruning_path(x_train, y_train)
     ccp_alphas = path.ccp_alphas
 
@@ -42,14 +43,24 @@ def alpha(ccp_alphas, x_train, y_train):
     
     return scores
 
+def poda_visualizacao_relatorio():
+
+    arvore_podada_relatorio = DecisionTreeClassifier(
+            random_state=2,
+            #ccp_alpha=melhor_alpha,
+            max_depth=8, 
+            min_samples_split=100,
+            max_leaf_nodes=10,
+            class_weight='balanced'
+    ) 
+
+    return arvore_podada_relatorio
+
 def poda(melhor_alpha):
 
     arvore_podada = DecisionTreeClassifier(
                 random_state=2, 
                 ccp_alpha=melhor_alpha,
-                max_depth=8, 
-                min_samples_split=100,
-                max_leaf_nodes=10,
                 class_weight='balanced')
     
     return arvore_podada 
@@ -76,18 +87,15 @@ def matriz_confusao(y_test, previsoes, arvore):
 def acuracia(y_test, previsoes): 
 
     taxa_acerto = accuracy_score(y_test, previsoes)
-    taxa_erro = 1 - taxa_acerto
-
     return taxa_acerto 
 
 
-def variavei_importantes(arvore, dados_usina, y_test, previsoes):
+def variaveis_importantes(arvore, data_frame, y_test, previsoes):
 
-    importancias = pd.Series(arvore.feature_importances_, index=dados_usina.columns[:-1])
+    importancias = pd.Series(arvore.feature_importances_, index=data_frame.columns[:-1])
     print(importancias.sort_values(ascending=False))
 
-    print(classification_report(y_test, previsoes))
-
+    
 
 def gerar_arvore(arvore_podada):
 

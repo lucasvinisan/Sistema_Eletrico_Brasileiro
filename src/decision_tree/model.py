@@ -22,6 +22,7 @@ def criar_modelo_decision_tree():
     melhor_indice = np.argmax(scores)
     melhor_alpha = ccp_alphas[melhor_indice]
 
+    #Ávore para metricas do Relatório 
     arvore_podada = t.poda(melhor_alpha)
 
     arvore_podada.fit(x_train, y_train)
@@ -29,13 +30,19 @@ def criar_modelo_decision_tree():
     previsoes = arvore_podada.predict(x_test)
 
     taxa_acerto = t.acuracia(y_test, previsoes)
-    importancias = t.variavei_importantes(arvore_podada, dados_usina, y_test, previsoes)
+    importancias = t.variaveis_importantes(arvore_podada, dados_usina, y_test, previsoes)
     
-    print(importancias)
+    #t.matriz_confusao(y_test, previsoes, arvore_podada)
+
     print(taxa_acerto)
     print(classification_report(y_test, previsoes))
 
-    #t.matriz_confusao(y_test, previsoes, arvore_podada)
+    #Visulização da Árvore para Relatório
 
+    #arvore_relatorio = t.poda_visualizacao_relatorio() 
 
-    #t.gerar_arvore(arvore_podada)
+    #arvore_relatorio.fit(x_train, y_train)
+
+    #t.gerar_arvore(arvore_relatorio)
+
+    

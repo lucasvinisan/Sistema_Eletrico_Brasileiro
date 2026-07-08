@@ -39,7 +39,7 @@ Sistemas_Eletrico_Brasileiro/
 ├── src/
 │   ├── data_transformation/       # Preparação da base de dados
 │   │   └── transformation.py
-│   ├── decision_tree/             # Modelo de Árvore de Decisão 
+│   ├── decision_tree/             # Modelo Rep Tree 
 │   │   ├── model.py               
 │   │   └── train.py               
 │   └── random_forest/             # Modelo Random Forest 
@@ -184,20 +184,20 @@ Raiz (DscFonteCombustivel)
 
 |Classe (Alvo) | Precisão | Recall |F1-Score|Suporte|
 |-------|-------|-------|-------|-------|
-|`Autorização`|0.89|0.86|0.8|1.607|
-|`Concessão`|0.41|0.97|0.58|78|
-|`Registro`|0.98|0.95|0.96|5.891|
-|`Acurácia Geral (Accuracy)`|-|-|0.93|7.576|
-|`Macro Average`|0.74|0.93|0.79|7.576|
-|`Weighted Average`|0.94|0.93|0.93|7.576|
+|`Autorização`|0.89|0.94|0.91|1.607|
+|`Concessão`|0.50|0.81|0.61|78|
+|`Registro`|0.99|0.96|0.98|5.891|
+|`Acurácia Geral (Accuracy)`|-|-|0.96|7.576|
+|`Macro Average`|0.79|0.90|0.83|7.576|
+|`Weighted Average`|0.96|0.96|0.96|7.576|
 
- • Acurácia Geral (0.93): O modelo acerta 93% de todas as classificações que faz na base de teste, somando as três classes.
+ • Acurácia Geral (0.95): O modelo acerta 93% de todas as classificações que faz na base de teste, somando as três classes.
 
- • Macro Average (F1-Score: 0.79): É a média simples do desempenho das três classes. Como dá peso igual a todas, mostra que o modelo vai bem mesmo na classe com poucos dados (`Concessão`)
+ • Macro Average (F1-Score: 0.84): É a média simples do desempenho das três classes. Como dá peso igual a todas, mostra que o modelo vai bem mesmo na classe com poucos dados (`Concessão`)
 
- • Weighted Average (F1-Score: 0.93): É a média ponderada que leva em conta o tamanho de cada classe (Suporte).  Como reflete a proporção real da base de dados, isso vai em encontra com os 93% da acurácia observados.
+ • Weighted Average (F1-Score: 0.94): É a média ponderada que leva em conta o tamanho de cada classe (Suporte).  Como reflete a proporção real da base de dados, isso vai em encontra com os 93% da acurácia observados.
  
- • Observação: Mesmo com a aplicação de técnicas de balanceamento, a classe `Concessão` obteve um valor baixo de precisão. Isso evidencia que o modelo apresenta limitações para desempenhar com alta assertividade em variáveis (classes) que possuem poucas observações na base de dados, gerando um volume expressivo de falsos positivos. 
+ • Observação: Mesmo com a aplicação de técnicas de balanceamento, a classe `Concessão` obteve um valor baixo de precisão. Isso evidencia que o modelo apresenta limitações para desempenhar com alta assertividade na classe Concessão, com poucas observações na base de dados, gerando um volume expressivo de falsos positivos. 
 
 ### Random Forest 
 
