@@ -34,10 +34,10 @@ O projeto está organizado de forma modular para separar a lógica de transforma
 
 Sistemas_Eletrico_Brasileiro/ 
 ├── dados/
-│   └── dados_futuros.csv          # Dataset pré-processado
+│   └── dados_futuros.csv          # Base de Dados pré-processada
 ├── img/                           # imagens do README     
 ├── src/
-│   ├── data_transformation/       # Preparação da base de dados
+│   ├── data_transformation/       # Preparação da Base de Dados
 │   │   └── transformation.py
 │   ├── decision_tree/             # Modelo Rep Tree 
 │   │   ├── model.py               
@@ -47,7 +47,7 @@ Sistemas_Eletrico_Brasileiro/
 │       └── train.py               
 ├── style/
 │   └── style.css                  # Estilos do dashboard 
-├── index.html                     # Importação do dashboard do Tableau
+├── index.html                     # Importação do dashboard
 ├── main.py                        # Execução principal
 ├── requirements.txt               # Arquivo de dependências com versões exatas fixadas
 └── README.md                      # Documentação completa do projeto
@@ -55,12 +55,12 @@ Sistemas_Eletrico_Brasileiro/
 ---
 
 ## 🛠️ Tecnologias e Bibliotecas
-As principais ferramentas utilizadas no desenvolvimento deste ecossistema foram:
+As principais ferramentas utilizadas no desenvolvimento:
 
 * **Python :** Linguagem base para implementação do projeto.
-* **Pandas:** Utilizado para manipulação de DataFrames, tratamento dos dados.
-* **Numpy:** Implemntação das operações matemáticas.
-* **Scikit-Learn:** Framework para divisão de dados (train/test split), extração de métricas de validação e implementações dos modelos de ML.
+* **Pandas:** Utilizado para manipulação do DataFrame e o tratamento dos dados.
+* **Numpy:** Implementação das operações matemáticas.
+* **Scikit-Learn:** Framework para divisão de dados (train/test), extração de métricas de validação e implementações dos modelos de ML.
 * **Matplotlib:** plotagem da matriz de confução de metricas de avaliação dos modelos. 
 * **Tableau:** Plataforma de Business Intelligence utilizada para construir os dashboards interativos.
 * **HTML5 & CSS3:** Importação e visualização do dashboard.
@@ -74,8 +74,8 @@ Os dados já foram pré-processados via google colab e salvos no formato dados_f
 Pré-Processamento 
 
 1. **Limpeza de Dados:** Remoção de registros duplicados e remoção de colunas irrelevantes para os modelos.
-2. **Codificação das Variáveis Categóricas:** Aplicação do LabelEncoder da biblioteca Scikit-Learn.preprocessing para transofarmar valores categóricos em númericos.
-3. **Divisão dos Dados:** Separação do dataset em conjuntos de treino e teste (70% treino e 30% teste).
+2. **Codificação das Variáveis Categóricas:** Aplicação do LabelEncoder da biblioteca Scikit-Learn para transformar valores categóricos em númericos.
+3. **Divisão dos Dados:** Separação da base de dados em conjuntos de treino e teste (70% treino e 30% teste).
 
 Atributos
 
@@ -90,15 +90,17 @@ Variável alvo
 ## 🤖 Modelos Implementados e Fundamentação
 
 ### 1. Random Forest (Floresta Aleatória)
-O Random Forest é um algoritmo de aprendizado supervisionado baseado em *Ensemble Learning*. Ele constrói múltiplas árvores de decisão durante a fase de treinamento e combina suas predições (via votação majoritária para classificação ou média para regressão).
+O Random Forest é um algoritmo de aprendizado supervisionado. Ele constrói múltiplas árvores de decisão durante a fase de treinamento e combina suas predições.
 
-* **Vantagens:** Alta robustez contra *overfitting*, lida bem com relações não-lineares de alta dimensionalidade e fornece a importância de cada variável (*Feature Importance*).
+* **Vantagens:** Alta robustez contra *overfitting*, lida bem com relações não-lineares de alta dimensionalidade e fornece a importância de cada variável.
+
 * **Hiperparâmetros Ajustados:** Número de árvores (`n_estimators`), profundidade máxima (`max_depth`) e critérios de divisão (`criterion='gini`).
 
 ### 2. REP Tree (Reduced Error Pruning Tree)
 
-A *Reduced Error Pruning Tree* é uma variação otimizada da árvore de decisão clássica. Ela constrói a árvore utilizando ganho de informação ou redução de variância e, em seguida, aplica a técnica de poda de trás para frente (da base para a raiz).
+É uma variação otimizada da árvore de decisão clássica. Ela constrói a árvore utilizando ganho de informação ou redução de variância e, em seguida, aplica a técnica de poda de trás para frente (da base para a raiz).
 * **O Processo de Poda:** O algoritmo separa uma parte dos dados de treino como conjunto de validação. Ele avalia o impacto de podar (remover) subárvores específicas; se a remoção da subárvore não diminuir a precisão no conjunto de validação, a subárvore é substituída por uma folha.
+
 * **Vantagens:** Gera modelos altamente interpretáveis, visualmente limpos, muito mais rápidos na inferência e imunes a ramos ruidosos.
 
 ---
@@ -122,7 +124,9 @@ Os próximos passos descrevem com executar o projeto:
 
 ## 📊 Resultados e Discussão
 
-Os modelos foram avaliados utilizando métricas de desempenho. Abaixo estão os resultados comparativos:
+Os modelos foram avaliados utilizando métricas de desempenho. 
+
+Abaixo estão os resultados obtidos e uma comparação entre os modelos implementados:
 
 ### REP Tree
 
