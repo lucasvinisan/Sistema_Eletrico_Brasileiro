@@ -132,36 +132,54 @@ Os modelos foram avaliados utilizando métricas de desempenho. Abaixo estão os 
 
 ### Análise da Matriz de Confusão Normalizada
 
- • Diagonal Principal (Verdadeiros Positivos): O maior destaque é a classe Concessão, com 97% de acertos, seguida por Registro (95%) e Autorização (86%). O balanceamento dos dados contribuiu significativamente para a alta taxa de acertos na classe minoritária (Concessão).
+ • Diagonal Principal (Verdadeiros Positivos): O maior destaque é a classe Registros, com 96% de acertos, seguida por Autorização (94%) e Concessão (81%). O balanceamento dos dados contribuiu significativamente para a alta taxa de acertos na classe minoritária (Concessão).
 
- • Falsos Positivos: O modelo demonstra excelente especificidade em alguns pontos, como não confundir Registro com Concessão (0%). Por outro lado, classifica erroneamente cerca de 7,3% das Autorizações como Concessão e 6,7% como Registro
+ • Falsos Positivos: O modelo demonstra excelente especificidade em alguns pontos, com poucos falsos positivos sendo registrados. 
 
- • O Impacto no Resultado: Como o volume de processos de Autorização é majoritário na base de dados, esses 7,3% de erro direcionados para a classe menor geram um volume de alarmes falsos que infla a coluna de predição. Isso derruba a precisão de Concessão para 35%, embora o modelo apresente um ótimo desempenho (sensibilidade) na captura de quase todas as concessões reais.
+ • O Impacto no Resultado: Como o volume de processos de Registros é majoritário na base de dados, os falsos positivos direcionados para a classe menor geram um volume de alarmes falsos que infla a coluna de predição. Isso derruba a precisão de Concessão para 50%, embora o modelo apresente um ótimo desempenho (sensibilidade) na captura de quase todas as concessões reais.
 
 #### Importância 
 
 |Posição |Preditores  | Nível de Importância (%) |
 |------- |:------------- |:-------------:|
-|1° |`NomFonteCombustivel` |  0.672796     |
-|2° |`SigUFPrincipal`      |  0.252363     |
-|3° |`SigTipoGeracao`      | 0.060997     |
-|4° |`MdaGarantiaFisicaKw` |   0.013844    |
-|5° |`DscFonteCombustivel` |  0.000000     |
-|6° |`DscOrigemCombustivel`| 0.000000     |
+|1° |`NomFonteCombustivel` |  0.603780     |
+|2° |`SigUFPrincipal`      |  0.286759    |
+|3° |`SigTipoGeracao`      |0.059192     |
+|4° |`MdaGarantiaFisicaKw` |   0.046290   |
+|5° |`DscFonteCombustivel` |  0.002735    |
+|6° |`DscOrigemCombustivel`|  0.001243    |
 
 
 #### Análisando as Variáveis de Importância
 
-• A variável `NomFonteCombustivel` é dominante, sendo que mais de 67% da capacidade da árvore de separar as classes vêm das regras criadas a partir dela.
+• A variável `NomFonteCombustivel` é dominante, sendo que mais de 60% da capacidade da árvore de separar as classes vêm das regras criadas a partir dela.
 
 • A variável `SigUFPrincipal`também apresenta forte relevância, indicando que os fatores de localização geográfica dos empreendimentos contribuem significativamente para a diferenciação dos processos.
 
-• As variáveis `SigTipoGeracao` e `MdaGarantiaFisicaKw` possuem menor impacto, contribuindo apenas no refinamento de alguns nós específicos da árvore.
-
-• As variáveis `DscFonteCombustivel` e `DscOrigemCombustivel` apresentam importância zerada (0%), pois trazem as mesmas informações mapeadas pela variável dominante `NomFonteCombustivel`.
+• As variáveis `SigTipoGeracao`, `MdaGarantiaFisicaKw`, `DscFonteCombustivel` e `DscOrigemCombustivel` possuem menor impacto, contribuindo apenas no refinamento de alguns nós específicos da árvore.
 
 
-### Árvore Podada Gerada pelo modelo 
+#### Precisão do Modelo 
+
+|Classe (Alvo) | Precisão | Recall |F1-Score|Suporte|
+|-------|-------|-------|-------|-------|
+|`Autorização`|0.89|0.94|0.91|1.607|
+|`Concessão`|0.50|0.81|0.61|78|
+|`Registro`|0.99|0.96|0.98|5.891|
+|`Acurácia Geral (Accuracy)`|-|-|0.96|7.576|
+|`Macro Average`|0.79|0.90|0.83|7.576|
+|`Weighted Average`|0.96|0.96|0.96|7.576|
+
+ • Acurácia Geral (0.96): O modelo acerta 93% de todas as classificações que faz na base de teste, somando as três classes.
+
+ • Macro Average (F1-Score: 0.83): É a média simples do desempenho das três classes. Como dá peso igual a todas, mostra que o modelo vai bem mesmo na classe com poucos dados (`Concessão`)
+
+ • Weighted Average (F1-Score: 0.96): É a média ponderada que leva em conta o tamanho de cada classe (Suporte).  Como reflete a proporção real da base de dados, isso vai em encontra com os 93% da acurácia observados.
+ 
+ • Observação: Mesmo com a aplicação de técnicas de balanceamento, a classe `Concessão` obteve um valor baixo de precisão. Isso evidencia que o modelo apresenta limitações para desempenhar com alta assertividade na classe Concessão, com poucas observações na base de dados, gerando um volume expressivo de falsos positivos. 
+
+
+### Árvore Podada Gerada pelo modelo (Visualização) 
 
 <div align="center">
   <img src="img/arvore_gerada_RepTree.png" width=1400">
@@ -179,26 +197,6 @@ Raiz (DscFonteCombustivel)
  • Condição (False):  O fluxo vai para à direita, onde a maioria dos dados são destinas as outorgas de Registros. 
 
 ```
-
-#### Precisão do Modelo 
-
-|Classe (Alvo) | Precisão | Recall |F1-Score|Suporte|
-|-------|-------|-------|-------|-------|
-|`Autorização`|0.89|0.94|0.91|1.607|
-|`Concessão`|0.50|0.81|0.61|78|
-|`Registro`|0.99|0.96|0.98|5.891|
-|`Acurácia Geral (Accuracy)`|-|-|0.96|7.576|
-|`Macro Average`|0.79|0.90|0.83|7.576|
-|`Weighted Average`|0.96|0.96|0.96|7.576|
-
- • Acurácia Geral (0.95): O modelo acerta 93% de todas as classificações que faz na base de teste, somando as três classes.
-
- • Macro Average (F1-Score: 0.84): É a média simples do desempenho das três classes. Como dá peso igual a todas, mostra que o modelo vai bem mesmo na classe com poucos dados (`Concessão`)
-
- • Weighted Average (F1-Score: 0.94): É a média ponderada que leva em conta o tamanho de cada classe (Suporte).  Como reflete a proporção real da base de dados, isso vai em encontra com os 93% da acurácia observados.
- 
- • Observação: Mesmo com a aplicação de técnicas de balanceamento, a classe `Concessão` obteve um valor baixo de precisão. Isso evidencia que o modelo apresenta limitações para desempenhar com alta assertividade na classe Concessão, com poucas observações na base de dados, gerando um volume expressivo de falsos positivos. 
-
 ### Random Forest 
 
 <div align="center">
@@ -217,12 +215,12 @@ Raiz (DscFonteCombustivel)
 
 |Posição |Preditores  | Nível de Importância (%) |
 |------- |:------------- |:-------------:|
-|1° |`SigUFPrincipal`       | 0.397117   |
-|2° |`MdaGarantiaFisicaKw`  | 0.232564   |
-|3° |`NomFonteCombustivel`  | 0.135554   |
-|4° |`SigTipoGeracao`       | 0.086731   |
-|5° |`DscFonteCombustivel`  | 0.080691   |
-|5° |`DscOrigemCombustivel` | 0.067343   |
+|1° |`SigUFPrincipal`       | 0.378267   |
+|2° |`MdaGarantiaFisicaKw`  | 0.243252   |
+|3° |`NomFonteCombustivel`  | 0.109074   |
+|4° |`SigTipoGeracao`       | 0.108811   |
+|5° |`DscFonteCombustivel`  | 0.084278   |
+|5° |`DscOrigemCombustivel` | 0.076319   |
 
 #### Análisando as Variáveis de Importância 
 
@@ -239,16 +237,16 @@ Raiz (DscFonteCombustivel)
 
 |Classe (Alvo) | Precisão | Recall |F1-Score|Suporte|
 |-------|-------|-------|-------|-------|
-|`Autorização`              | 0.93 | 0.92  | 0.93 | 1347 |
-|`Concessão`                | 0.87 | 0.82  | 0.85 |  67  |
-|`Registro`                 | 0.98  |0.98  | 0.98 | 4900 |
-|`Acurácia Geral (Accuracy)`|-      |-     | 0.97 | 6314 |
-|`Macro Average`            | 0.93  | 0.91 | 0.92 | 6314 |
-|`Weighted Average`         | 0.97  | 0.97 | 0.97 | 6314 |
+|`Autorização`              | 0.92 | 0.92  | 0.93 | 1607 |
+|`Concessão`                | 0.90 | 0.82  | 0.86 |  78  |
+|`Registro`                 | 0.98  |0.98  | 0.98 | 5891 |
+|`Acurácia Geral (Accuracy)`|-      |-     | 0.97 | 7576 |
+|`Macro Average`            | 0.93  | 0.91 | 0.92 | 7576 |
+|`Weighted Average`         | 0.97  | 0.97 | 0.97 | 7576 |
 
  • Acurácia Geral (0.97): O modelo acerta 97% de  todas as classificações feitas na base de dados.
 
- • Macro Average (F1-Score: 0.92): É a média simples do desempenho das três classes. Um scode 91 mostra que o modelo aprendeu os padrões reais da base de dados. 
+ • Macro Average (F1-Score: 0.93): É a média simples do desempenho das três classes. Isso mostra que o modelo aprendeu os padrões reais da base de dados. 
 
  • Weighted Average (F1-Score: 0.97): É a média ponderada que leva em conta o tamanho de cada classe.  Com valor de 0.97 mostra que o modelo consolidou a eficácia na classificação dos dados reais.  
 

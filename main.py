@@ -8,8 +8,8 @@ def dashboard():
     webbrowser.open(f"file://{caminho_arquivo}")
 
 def main():
-    #md_rp.criar_modelo_decision_tree()
-    #md_rf.criar_modelo_random_forest()
+    md_rp.criar_modelo_decision_tree()
+    md_rf.criar_modelo_random_forest()
     dashboard()
 
 if __name__ == "__main__":
